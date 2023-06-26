@@ -1,69 +1,66 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Grid, TextField, Typography } from '@mui/material'
-import { blue, green, yellow } from '@mui/material/colors'
+import React, { useState, useEffect } from 'react';
+import { Button, Grid, TextField, Typography } from '@mui/material';
+import { green, yellow } from '@mui/material/colors';
 
-
-//add home page instructions?
-//addd log in?
-//needd pokemon api, ddatabse save points
-//
-
-
-//game logic 
 const PokemonWordleGame = () => {
+  const [targetPokemon, setTargetPokemon] = useState('')
+  const [guess, setGuess] = useState('')
+  const [attempts, setAttempts] = useState(6)
+  const [message, setMessage] = useState('')
+  const [previousAttempts, setPreviousAttempts] = useState([])
+  const [pokemonData, setPokemonData] = useState(null)
 
-    //hard code wpokemons
-  const generateRandomPokemon = () => {
-    const pokemon = ['pikachu', 'ditto', 'gardevoir', 'snorlax', 'lucario']
-    const randomIndex = Math.floor(Math.random() * pokemon.length)
-    return pokemon[randomIndex]
-  }
-
-  //fetchPokemon 
- // const res = fetch()
-
-  const [targetPokemon, setTargetPokemon] = useState(generateRandomPokemon()) // randomly chosen target Pokemon
-  const [guess, setGuess] = useState('') // users guesses
-  const [attempts, setAttempts] = useState(6) //  attempts left
-  const [message, setMessage] = useState('') //message to display to the user
-  const [previousAttempts, setPreviousAttempts] = useState([]) //to store previous attempt
   useEffect(() => {
-    setTargetPokemon(generateRandomPokemon())
-    setGuess('')
-    setAttempts(6)
-    setMessage('')
-    setPreviousAttempts([])
+    generateRandomPokemon()
   }, [])
 
-  const handleGuess = () => {
-    // checks if the guess matches the target pokemon
-    if (guess.toLowerCase() === targetPokemon.toLowerCase()) {
-      setMessage('correct pokemon!!')
-      // update leaderboard 
-    } else {
-      // traking away  attempts
-      setAttempts((prevAttempts) => prevAttempts - 1)
+  const generateRandomPokemon = async () => {
+  
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000')
+      const data = await response.json()
+      const randomIndex = Math.floor(Math.random() * data.results.length)
+      const randomPokemon = data.results[randomIndex].name
+      setTargetPokemon(randomPokemon)
 
-      // if all attempts used
+  }
+
+  useEffect(() => {
+    getPokemonData(targetPokemon)
+  }, [targetPokemon])
+
+  const getPokemonData = async (pokemonName) => {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+      const data = await response.json();
+      setPokemonData(data)
+
+  };
+
+  const handleGuess = () => {
+    if (guess.toLowerCase() === targetPokemon.toLowerCase()) {
+      setMessage('Correct pokemon!');
+    } else {
+      setAttempts((prevAttempts) => prevAttempts - 1)
+      setMessage('Incorrect, try again!')
+      setPreviousAttempts((prevAttempts) => [...prevAttempts, guess])
+
       if (attempts === 1) {
-        setMessage(`wrong game over! The Pokemon was "${targetPokemon}".`)
-        // update leader board accordingly
-        setMessage('incorrect, try again!!')
-        setPreviousAttempts((prevAttempts) => [...prevAttempts, guess])
+        setMessage(`you lose! The Pokemon was "${targetPokemon}".`)
       }
     }
-  }
+
+    setGuess('')
+  };
 
   const getLetterColor = (index, letter) => {
     if (targetPokemon.includes(letter)) {
       if (targetPokemon.indexOf(letter) === index) {
-        return green[500] // correct letter in the right spot
+        return green[500]
       } else {
-        return yellow[500] //  correct letter in the wrong spot
+        return yellow[500]
       }
     }
-    return 'default' 
-  }
+    return 'default'
+  };
 
   return (
     <div>
@@ -79,13 +76,15 @@ const PokemonWordleGame = () => {
       <Grid container spacing={1}>
         {Array.from(targetPokemon).map((letter, index) => (
           <Grid item key={index}>
-            <Button variant="contained" >
-              {guess[index] || ''}
-            </Button>
+            <Button variant="contained">{guess[index] || ''}</Button>
           </Grid>
         ))}
       </Grid>
-      <Button variant="contained" onClick={handleGuess} disabled={guess.length !== targetPokemon.length}>
+      <Button
+        variant="contained"
+        onClick={handleGuess}
+        disabled={guess.length !== targetPokemon.length}
+      >
         Guess
       </Button>
       <Typography variant="body1">{message}</Typography>
@@ -108,4 +107,4 @@ const PokemonWordleGame = () => {
   )
 }
 
-export default PokemonWordleGame
+export default PokemonWordleGame;
