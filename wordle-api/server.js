@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const PORT = 3001;
 
+
+
 app.listen(PORT, () => console.log(`Server is listening here: http://localhost:${PORT}`))
 
 app.use(express.json())
@@ -19,3 +21,14 @@ app.get('/pokemon/:name', async (req, res) => {
     // 
   
 })
+
+     
+
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path')
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
