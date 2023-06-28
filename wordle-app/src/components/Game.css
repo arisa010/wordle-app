@@ -1,0 +1,92 @@
+.pokemon-wordle-game {
+    text-align: center;
+    padding: 20px;
+  }
+
+  
+  .pokemon-wordle-title {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #ff3366;
+  }
+  
+  .pokemon-wordle-attempts {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #333333;
+  }
+  
+  .pokemon-wordle-input {
+    margin-bottom: 10px;
+  }
+  
+  .pokemon-wordle-letter {
+    text-align: center;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+    background-color: #ffcc00;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .pokemon-wordle-button {
+    margin-top: 10px;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    background-color: #ff3366;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pokemon-wordle-button:hover {
+    background-color: #ff6699;
+  }
+  
+  .pokemon-wordle-message {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333333;
+  }
+  
+  .pokemon-wordle-attempt {
+    margin-top: 10px;
+  }
+  
+  .pokemon-wordle-leaderboard {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333333;
+  }
+  
+  .pokemon-wordle-leaderboard-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+  }
+  
+  .pokemon-wordle-leaderboard-item {
+    margin-bottom: 5px;
+  }
+  
+  .pokemon-answer-image {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .pokemon-answer-image:hover {
+    transform: scale(1.2);
+  }
+  
